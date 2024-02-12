@@ -1,1 +1,17 @@
 1. https://towardsdatascience.com/robust-face-detection-with-mtcnn-400fa81adc2e
+
+2. https://medium.com/@iselagradilla94/multi-task-cascaded-convolutional-networks-mtcnn-for-face-detection-and-facial-landmark-alignment-7c21e8007923
+
+->The first step is to take the image and resize it to different scales in order to build an image pyramid, which is the input of the following three-staged cascaded network.
+Proposal Network (P-Net): FCN is that a fully convolutional network
+This Proposal Network is used to obtain candidate windows and their bounding box regression vectors.
+Bounding box regression is a popular technique to predict the localization of boxes when the goal is detecting an object of some pre-defined class, in this case faces. 
+
+-> Refine Network (R-Net): CNN
+The R-Net outputs wether the input is a face or not, a 4 element vector which is the bounding box for the face, and a 10 element vector for facial landmark localization.
+
+->Output Network (O-Net):
+Output Network aims to describe the face in more detail and output the five facial landmarks’ positions for eyes, nose and mouth.
+
+Three Tasks of MTCNN
+The Network’s task is to output three things: face/non-face classification, bounding box regression, and facial landmark localization.
