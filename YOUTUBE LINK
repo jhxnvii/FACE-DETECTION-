@@ -1,0 +1,79 @@
+1. https://www.youtube.com/watch?v=ZjbWF9f3VD4
+
+1. Applications of Face detection : Face recognition, Photography
+2. 2 task: Bounding Box Regression(image create box around), Facial Landmark Detection(mark nose, eyes, mouth on face)
+3. 5 landmarks: nose , left and rigth eye, left and right side of mouth.
+4. Other alternatives: HAAR cascades, Dlib frontal face detector, DNN face detector in Opencv
+blog: difference btw. them : https://towardsdatascience.com/how-does-a-face-detection-program-work-using-neural-networks-17896df8e6ff
+5. HOW DOES IT WORK:
+P-NET, R-NET, O-NET
+6. PAPER:https://arxiv.org/ftp/arxiv/papers/1604/1604.02878.pdf
+7. 1. Detecting a single face, 2. Detecting facial landmarks, 3. Detecting multiple faces, 4. Detecting faces in a video
+code: https://github.com/campusx-official/face-detection-using-mtcnn
+
+
+from mtcnn import MTCNN
+import cv2 
+
+detector = MTCNN()
+
+img = cv2.imread('images/vk.jpg')
+
+output = detector.detect_faces(img) //function- internally use tensor flow
+#[{},{}...{}]
+print(output)
+
+for i in output:
+    x,y,widht,height = i['box']
+//facial landmarks
+    left_eyeX,left_eyeY = i['keypoints']['left_eye'] //left eye will have circle 
+    right_eyeX,right_eyeY = i['keypoints']['right_eye']
+    noseX,noseY = i['keypoints']['nose']
+    mouth_leftX,mouth_leftY = i['keypoints']['mouth_left']
+    mouth_rightX,mouth_rightY = i['keypoints']['mouth_right']
+
+
+    cv2.circle(img,center=(left_eyeX,left_eyeY),color=(255,0,0),thickness=3,radius=2)
+    cv2.circle(img,center=(right_eyeX,right_eyeY),color=(255,0,0),thickness=3,radius=2)
+    cv2.circle(img,center=(noseX,noseY),color=(255,0,0),thickness=3,radius=2)
+    cv2.circle(img,center=(mouth_leftX,mouth_leftY),color=(255,0,0),thickness=3,radius=2)
+    cv2.circle(img,center=(mouth_rightX,mouth_rightY),color=(255,0,0),thickness=3,radius=2)
+//run single face:
+cv2.rectangle(img,pt1=(x,y),pt2=(x+widht,y+height),color=(255(blue color),0,0),thickness=3)
+cv2.imshow('window',img)
+
+cv2.waitKey(0)
+
+
+pip install MTCNN
+
+//code no. 2
+import cv2
+from mtcnn import MTCNN
+
+cap = cv2.VideoCapture(0)
+detector = MTCNN() //object
+
+while True:
+
+    ret,frame = cap.read()
+
+    output = detector.detect_faces(frame)
+
+    for single_output in output:
+        x,y,width,height = single_output['box']
+        cv2.rectangle(frame,pt1=(x,y),pt2=(x+width,y+height),color=(255,0,0),thickness=3)
+
+    cv2.imshow('win',frame)
+
+    if cv2.waitKey(1) & 0xFF == ord('x'): //when x will be written the code will break.
+        break
+
+cv2.destroyAllWindows()
+
+
+PROJECT IDEAS:
+1. FACE BLURRING (OPEN CV)
+2. FACE ALIGNMENT DETECTOR (SLOPE WILL TELL THE ALIGNMENT OF FACE)
+
+
